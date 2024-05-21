@@ -243,7 +243,7 @@ public class StaffTestClass {
         sleep(500);
 
         System.out.println("2. Click Icon Edit");
-        chromeDriver.findElement(By.xpath(ICON_EDIT_BOOK)).click();
+        chromeDriver.findElement(By.xpath(StaffPage.ICON_DEL_STAFF)).click();
 
         System.out.println("3. Clear Text and Enter Text Update");
         WebElement txtName = chromeDriver.findElement(By.xpath(StaffPage.TEXTBOX_STAFF_NAME));
@@ -276,7 +276,7 @@ public class StaffTestClass {
         sleep(500);
 
         System.out.println("2. Click Icon Edit");
-        chromeDriver.findElement(By.xpath(ICON_EDIT_BOOK)).click();
+        chromeDriver.findElement(By.xpath(CustomerPage.BUTTON_CREATE_NEW_FAIL)).click();
 
         System.out.println("3. Clear Text and Enter Text Invalid Update");
         WebElement txtName = chromeDriver.findElement(By.xpath(StaffPage.TEXTBOX_STAFF_NAME));
