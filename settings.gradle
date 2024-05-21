@@ -1,0 +1,4 @@
+rootProject.name = 'Automationtest_HBBookshop'
+include 'src:main:interfaces'
+findProject(':src:main:interfaces')?.name = 'interfaces'
+
