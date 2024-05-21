@@ -49,10 +49,10 @@ public class BookwarehouseTestClass extends BookwarehousePage{
 
         System.out.println("2. Enter Book Information Valid");
         sleep(100);
-        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_NAME)).sendKeys("The Lord of the Rings");
-        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_AUTHOR)).sendKeys("J.R.R. Tolkien");
-        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_PRICE)).sendKeys("400000");
-        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_QUANTITY)).sendKeys("100");
+        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_NAME)).sendKeys("The Old Man and the Sea");
+        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_AUTHOR)).sendKeys("Ernest Hemingway");
+        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_PRICE)).sendKeys("300000");
+        chromeDriver.findElement(By.xpath(TEXTBOX_BOOK_QUANTITY)).sendKeys("80");
 
         System.out.println("3. Click Button Save");
         chromeDriver.findElement(By.xpath(BUTTON_SAVE_BOOK)).click();
