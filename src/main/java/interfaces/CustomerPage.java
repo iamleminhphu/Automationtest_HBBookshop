@@ -23,6 +23,4 @@ public class CustomerPage {
     public static final String SEARCH_CUS_BAR="//input[@class='form-control']";
     public static final String SEARCH_CUS_ACTUAL="//tbody/tr[1]/td[1]";
     public static final String ALL_NAME_CUSTOMER="//table//tbody/tr/td[1]";
-    public static final String ALL_CUSTOMER="//table//tbody/tr";
-    public static final String CUSTOMER_NAME_COLUMN="./td[";
 }
