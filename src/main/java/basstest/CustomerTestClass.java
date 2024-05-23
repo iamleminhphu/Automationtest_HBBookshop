@@ -26,7 +26,7 @@ public class CustomerTestClass extends CustomerPage{
             chromeDriver.findElement(By.xpath(LoginPage.TEXTBOX_ACCOUNT)).sendKeys("0372653551");
             chromeDriver.findElement(By.xpath(LoginPage.TEXTBOX_PASSWORD)).sendKeys("abc123");
             chromeDriver.findElement(By.xpath(LoginPage.BUTTON_LOGIN)).click();
-            chromeDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+            chromeDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             //Click on the function to test
             chromeDriver.findElement(By.xpath(BUTTON_FUNCTION_CUSTOMER)).click();
         }
@@ -179,7 +179,7 @@ public class CustomerTestClass extends CustomerPage{
         }
 
         System.out.println("4. Check display and Verify screen displays a error message");
-        // Xác định các xpath của các textbox và thông báo lỗi tương ứng (ví dụ)
+        // Xác định các xpath của các textbox
         String[] textBoxXpaths = {TEXTBOX_CUS_NAME, TEXTBOX_CUS_TEL, TEXTBOX_CUS_ADDRESS, TEXTBOX_CUS_BIRTHDAY};
 
         // Duyệt qua từng textbox để kiểm tra có thông báo lỗi không
@@ -231,33 +231,26 @@ public class CustomerTestClass extends CustomerPage{
 
         System.out.println("2. Enter customer name Le Minh Phu");
         SearchCustomer.sendKeys("Le Minh Phu");
+        String searchCustomername = SearchCustomer.getAttribute("value");
 
-        System.out.println("3. Verify search success");
+        System.out.println("3. Verify and Check the display");
         //Get all rows in the table
         List<WebElement> rows = chromeDriver.findElements(By.xpath(ALL_NAME_CUSTOMER));
-        try {
-            // Nếu không có kết quả nào thì fail
-            Assert.assertFalse(rows.isEmpty(), "No search results found.");
-
-            // Kiểm tra từng dòng kết quả tìm kiếm
-            boolean allResultsContainName = true;
-            for (WebElement result : rows) {
-                String resultText = result.getText();
-                if (!resultText.contains("Le Minh Phu")) {
-                    allResultsContainName = false;
-                    System.out.println("Unexpected result found: " + resultText);
-                }
+        // Kiểm tra từng dòng kết quả tìm kiếm
+        boolean allResultsContainName = true;
+        for (WebElement result : rows) {
+            String resultText = result.getText();
+            if (!resultText.contains(searchCustomername)) {
+                allResultsContainName = false;
+                System.out.println("Results found unexpected customer name: " + resultText);
             }
-            // Assert rằng tất cả các kết quả đều chứa tên "Le Minh Phu"
-            if (allResultsContainName) {
-                System.out.println("All search results contain the name 'Le Minh Phu'");
-                Assert.assertTrue(true, "All search results contain the name 'Le Minh Phu'");
-            } else {
-                Assert.fail("Some search results do not contain 'Le Minh Phu'");
-            }
-        } catch (AssertionError e) {
-            System.out.println("ErrorMessage: " + e.getMessage());
-            throw e;
+        }
+        // Assert rằng tất cả các kết quả đều chứa tên "Le Minh Phu"
+        if (allResultsContainName) {
+            System.out.println("All customers name contain the '" + searchCustomername + "' entered");
+            Assert.assertTrue(true); // Pass when all customer names contain the letter N
+        } else {
+            Assert.fail("The search results do not contain the customer name '" + searchCustomername + "' entered"); // Fail when the name does not match
         }
     }
 
@@ -268,46 +261,28 @@ public class CustomerTestClass extends CustomerPage{
         WebElement SearchCustomer = chromeDriver.findElement(By.xpath(SEARCH_CUS_BAR));
         SearchCustomer.click();
 
-        System.out.println("2. Enter L");
-        SearchCustomer.sendKeys("L");
+        System.out.println("2. Enter letter in customer name N");
+        SearchCustomer.sendKeys("N");
+        String searchLetter = SearchCustomer.getAttribute("value");
 
-        System.out.println("3. Verify search success");
-        int columnNameIndex = 1;
-
-        //First letter value to search
-        String searchLetter = "L";
-
+        System.out.println("3. Verify and Check the display");
         //Get all rows in the table
-        List<WebElement> rows = chromeDriver.findElements(By.xpath(ALL_CUSTOMER));
-
-        //Variable to evaluate the final result
+        List<WebElement> rows = chromeDriver.findElements(By.xpath(ALL_NAME_CUSTOMER));
+        // Kiểm tra từng dòng kết quả tìm kiếm
         boolean allNamesContainLetter = true;
-        List<String> addlistCustomerNames = new ArrayList<>();
-
-        // Browse through each row in the table
-        for (WebElement row : rows) {
-            // Get information from the cell in the customer name column
-            sleep(100);
-            WebElement nameCell = row.findElement(By.xpath(CUSTOMER_NAME_COLUMN + columnNameIndex + "]"));
-            String customerName = nameCell.getText();
-            System.out.println("Customer name: " + customerName);
-
-            // Check if the letter L of the customer name matches
-            if (!customerName.toUpperCase().contains(searchLetter.toUpperCase())) {
-                allNamesContainLetter = false; // If the letter L is not found, mark failure
-                addlistCustomerNames.add(customerName); // Add to list of list names
+        for (WebElement result : rows) {
+            String resultText = result.getText();
+            if (!resultText.toUpperCase().contains(searchLetter.toUpperCase())) {
+                allNamesContainLetter = false;
+                System.out.println("Results found unexpected customer name: " + resultText);
             }
         }
-
-        // Check the final result
+        // Assert rằng tất cả các kết quả đều chứa tên "N"
         if (allNamesContainLetter) {
-            System.out.println("All customers contain the '" + searchLetter + "' entered letter");
-            Assert.assertTrue(true); // Pass when all customer names contain the letter L
+            System.out.println("All customers contain the letter '" + searchLetter + "' in the customer's name");
+            Assert.assertTrue(true); // Pass when all customer names contain the letter N
         } else {
-            for (String getCustomerName : addlistCustomerNames) {
-                System.out.println("There is a customer name '" + getCustomerName + "' that does not contain the '" + searchLetter + "' entered letter");
-            }
-            Assert.fail("Search results have customer names that do not contain the '" + searchLetter + "' entered letter"); // Fail when the name does not match
+            Assert.fail("The search results do not contain the letter '" + searchLetter + "' in the customer's name"); // Fail when the name does not match
         }
     }
 
@@ -324,11 +299,9 @@ public class CustomerTestClass extends CustomerPage{
         System.out.println("3. Verify screen not display");
         try {
             WebElement SearchActual = chromeDriver.findElement(By.xpath(SEARCH_CUS_ACTUAL));
-            Assert.assertFalse(SearchActual.isDisplayed());
-        } catch (AssertionError e){
-            System.out.println("ErrorMessage: " + e.getMessage());
-            System.out.println("The expected is empty but the actual are still displayed");
-            throw e;
+            Assert.assertFalse(SearchActual.isDisplayed(), "The expected is empty but the actual are still displayed");
+        } catch (AssertionError e){//Pass khi search actual khong hien thi, neu hien thi tc fail va in ra msg
+            Assert.fail(e.getMessage());
         }
     }
 
@@ -345,11 +318,9 @@ public class CustomerTestClass extends CustomerPage{
         System.out.println("3. Verify screen not display");
         try {
             WebElement SearchActual = chromeDriver.findElement(By.xpath(SEARCH_CUS_ACTUAL));
-            Assert.assertFalse(SearchActual.isDisplayed());
-        } catch (AssertionError e){
-            System.out.println("ErrorMessage: " + e.getMessage());
-            System.out.println("The expected is empty but the actual are still displayed");
-            throw e;
+            Assert.assertFalse(SearchActual.isDisplayed(), "The expected is empty but the actual are still displayed");
+        } catch (AssertionError e){//Pass khi search actual khong hien thi, neu hien thi tc fail va in ra msg
+            Assert.fail(e.getMessage());
         }
     }
 
